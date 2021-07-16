@@ -26,7 +26,7 @@ public class TaskManager {
     // Zarządzanie programem -------------------------------------------------
 
     public static void manager(String fileName) {
-        String[] tasks = tasks("tasks.csv");
+        String[] tasks = tasks(fileName);
         String option = new String();
         Scanner scan = new Scanner(System.in);
 
@@ -76,6 +76,7 @@ public class TaskManager {
             }
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
+            ex.printStackTrace();
         }
 
     }
@@ -184,8 +185,13 @@ public class TaskManager {
             for (int i = 0; i < strings.length; i++) {
                 strings[i] = scan.nextLine();
             }
-        } catch (IOException ex) {
+        }catch (FileNotFoundException ex){
+            System.out.println("File not found");
+            System.exit(0);
+        }
+        catch (IOException ex) {
             System.out.println(ex.getMessage());
+            ex.printStackTrace();
         }
         return strings;
     }
@@ -203,6 +209,7 @@ public class TaskManager {
             }
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
+            ex.printStackTrace();
         }
 
         return counter;
