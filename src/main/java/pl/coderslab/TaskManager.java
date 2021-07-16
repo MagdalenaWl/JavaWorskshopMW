@@ -3,7 +3,13 @@ package pl.coderslab;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -11,38 +17,71 @@ public class TaskManager {
 
     public static void main(String[] args) {
 
-        String[] tasks=tasks("tasks.csv");
+        String[] tasks = tasks("tasks.csv");
 //        selectOptions();
 //        list(tasks("tasks.csv"));
 //
 //
 //        list(add(tasks("tasks.csv")));
 
-  //      pickNumber(tasks("tasks.csv"));
+        //      pickNumber(tasks("tasks.csv"));
 
-//        list(tasks);
-//        tasks=deleteCell(tasks,1);
-//        list(tasks);
+        list(tasks);
+        tasks=remove(tasks);
+        list(tasks);
+        saveFile(tasks,"tasks.csv");
 
+
+    }
+    // Koniec programu -------------------------------------------------------
+
+    public static void exit(String[] tasks) {
+
+    }
+
+    // Zapisywanie danych do pliku -------------------------------------------
+
+    public static void saveFile(String tasks[], String fileName) {
+        Path path = Paths.get(fileName);
+        try {
+            cleanFile(fileName);
+        } catch (FileNotFoundException ex) {
+            System.out.println(ex.getMessage());
+        }
+        try {
+            for (String task : tasks) {
+                Files.writeString(path, task+"\n", StandardOpenOption.APPEND);
+
+            }
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+
+    }
+
+    public static void cleanFile(String fileName) throws FileNotFoundException {
+        PrintWriter cleaner = new PrintWriter(fileName);
+        cleaner.print("");
+        cleaner.close();
 
     }
     // Usuwanie danych z listy -----------------------------------------------
 
     public static String[] remove(String[] tasks) {
-        int remove=pickNumber(tasks);
-        tasks=deleteCell(tasks,remove);
+        int remove = pickNumber(tasks);
+        tasks = deleteCell(tasks, remove);
 
         return tasks;
     }
 
-    public static  String[] deleteCell(String[] tasks, int remove){
+    public static String[] deleteCell(String[] tasks, int remove) {
 
-        String[] delete=new String[tasks.length-1];
+        String[] delete = new String[tasks.length - 1];
         for (int i = 0; i < remove; i++) {
-            delete[i]=tasks[i];
+            delete[i] = tasks[i];
         }
         for (int i = remove; i < delete.length; i++) {
-            delete[i]=tasks[i+1];
+            delete[i] = tasks[i + 1];
         }
 
         return delete;
