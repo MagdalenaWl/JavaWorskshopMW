@@ -17,26 +17,47 @@ public class TaskManager {
 
     public static void main(String[] args) {
 
-        String[] tasks = tasks("tasks.csv");
-//        selectOptions();
-//        list(tasks("tasks.csv"));
-//
-//
-//        list(add(tasks("tasks.csv")));
-
-        //      pickNumber(tasks("tasks.csv"));
-
-        list(tasks);
-        tasks=remove(tasks);
-        list(tasks);
-        saveFile(tasks,"tasks.csv");
+        String fileName = "tasks.csv";
+        manager(fileName);
 
 
     }
+
+    // Zarządzanie programem -------------------------------------------------
+
+    public static void manager(String fileName) {
+        String[] tasks = tasks("tasks.csv");
+        String option = new String();
+        Scanner scan = new Scanner(System.in);
+
+
+        while (true) {
+            selectOptions();
+            option = scan.next();
+            if (option.equals("add")) {
+                tasks = add(tasks);
+            } else if (option.equals("remove")) {
+                tasks = remove(tasks);
+            } else if (option.equals("list")) {
+                list(tasks);
+            } else if (option.equals("exit")) {
+                exit(tasks, fileName);
+                break;
+            } else {
+                System.out.println(ConsoleColors.YELLOW + "Wrong option" + ConsoleColors.RESET);
+            }
+
+
+        }
+
+
+    }
+
     // Koniec programu -------------------------------------------------------
 
-    public static void exit(String[] tasks) {
-
+    public static void exit(String[] tasks, String fileName) {
+        System.out.println(ConsoleColors.PURPLE_BRIGHT + "Bye, bye");
+        saveFile(tasks, fileName);
     }
 
     // Zapisywanie danych do pliku -------------------------------------------
@@ -50,7 +71,7 @@ public class TaskManager {
         }
         try {
             for (String task : tasks) {
-                Files.writeString(path, task+"\n", StandardOpenOption.APPEND);
+                Files.writeString(path, task + "\n", StandardOpenOption.APPEND);
 
             }
         } catch (IOException ex) {
